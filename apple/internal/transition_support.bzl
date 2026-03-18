@@ -43,7 +43,6 @@ load(
 )
 
 _supports_visionos = hasattr(apple_common.platform_type, "visionos")
-_is_bazel_7 = not hasattr(apple_common, "apple_crosstool_transition")
 
 _PLATFORM_TYPE_TO_CPUS_FLAG = {
     "ios": "//command_line_option:ios_multi_cpus",
@@ -335,7 +334,7 @@ def _command_line_options(
         settings = settings,
     )
 
-    default_platforms = [settings[_CPU_TO_DEFAULT_PLATFORM_FLAG[cpu]]] if _is_bazel_7 else []
+    default_platforms = [settings[_CPU_TO_DEFAULT_PLATFORM_FLAG[cpu]]]
     return {
         build_settings_labels.use_tree_artifacts_outputs: force_bundle_outputs if force_bundle_outputs else settings[build_settings_labels.use_tree_artifacts_outputs],
         "//command_line_option:apple_platform_type": platform_type,
