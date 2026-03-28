@@ -96,3 +96,16 @@ struct HelloWorldIntent: AppIntent {
     }
   }
 #endif
+
+struct AppShortcuts: AppShortcutsProvider {
+    static var appShortcuts: [AppShortcut] {
+        AppShortcut(
+            intent: HelloWorldIntent(),
+            phrases: [
+                "Run hello world in \(.applicationName)",
+            ],
+            shortTitle: "Run First Intent",
+            systemImageName: "1.circle"
+        )
+    }
+}

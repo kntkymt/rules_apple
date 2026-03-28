@@ -671,6 +671,8 @@ def tvos_application_test_suite(name):
         text_test_values = [
             ".*HelloWorldIntent.*",
             ".*ExtraIntent.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         tags = [name],
     )
@@ -682,6 +684,8 @@ def tvos_application_test_suite(name):
         text_test_values = [
             ".*HelloWorldIntent.*",
             ".*ExtraIntent.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         tags = [name],
     )

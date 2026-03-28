@@ -448,6 +448,8 @@ def macos_application_test_suite(name):
         text_test_values = [
             ".*HelloWorldIntent.*",
             ".*FavoriteSoup.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         tags = [name],
     )
@@ -459,6 +461,8 @@ def macos_application_test_suite(name):
         text_test_values = [
             ".*HelloWorldIntent.*",
             ".*FavoriteSoup.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         tags = [name],
     )

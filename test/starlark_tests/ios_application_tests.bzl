@@ -866,6 +866,8 @@ def ios_application_test_suite(name):
         text_test_values = [
             ".*HelloWorldIntent.*",
             ".*FavoriteSoup.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         tags = [name],
     )
@@ -877,6 +879,8 @@ def ios_application_test_suite(name):
         text_test_values = [
             ".*HelloWorldIntent.*",
             ".*FavoriteSoup.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         tags = [name],
     )
@@ -906,6 +910,8 @@ def ios_application_test_suite(name):
             ".*HelloWorldIntent.*",
             ".*IntelIntent.*",
             ".*iOSIntent.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         text_file_not_contains = [
             ".*ArmIntent.*",
@@ -924,6 +930,8 @@ def ios_application_test_suite(name):
             ".*HelloWorldIntent.*",
             ".*ArmIntent.*",
             ".*iOSIntent.*",
+            ".*\"autoShortcuts\".*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         text_file_not_contains = [
             ".*IntelIntent.*",
