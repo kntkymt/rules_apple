@@ -16,7 +16,6 @@
 
 load("@bazel_skylib//lib:partial.bzl", "partial")
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
-load("//apple/internal:intermediates.bzl", "intermediates")
 load("//apple/internal:processor.bzl", "processor")
 load(
     "//apple/internal/providers:app_intents_info.bzl",
@@ -48,9 +47,13 @@ def _app_intents_metadata_bundle_partial_impl(
 
     metadata_bundle = None
     if platform_prerequisites.xcode_version_config.xcode_version() >= apple_common.dotted_version("26.0"):
-        per_dep_metadata_bundles = []
-        for dep in deps[first_cc_toolchain_key]:
-            per_dep_metadata_bundles.append(
+        # appintentsmetadataprocessor ignores AppShortcutsProvider coming from dependency metadata bundles,
+        # so treat the first app_intents dependency as the primary library and merge the remaining libraries into it.
+        primary_library = deps[first_cc_toolchain_key][0]
+
+        dependency_metadata_bundles = []
+        for dep in deps[first_cc_toolchain_key][1:]:
+            dependency_metadata_bundles.append(
                 generate_app_intents_metadata_bundle(
                     actions = actions,
                     apple_fragment = platform_prerequisites.apple_fragment,
@@ -69,30 +72,15 @@ def _app_intents_metadata_bundle_partial_impl(
                 ),
             )
 
-        # Merge multiple intent metadatas into a single.
-        dummy_source_file = intermediates.file(
-            actions = actions,
-            target_name = label.name,
-            output_discriminator = None,
-            file_name = "{}_app_intents_dummy_source.swift".format(label.name),
-        )
-        dummy_constvalues_file = intermediates.file(
-            actions = actions,
-            target_name = label.name,
-            output_discriminator = None,
-            file_name = "{}_app_intents_dummy_constvalues.swiftconstvalues".format(label.name),
-        )
-        actions.write(output = dummy_source_file, content = "")
-        actions.write(output = dummy_constvalues_file, content = "[]")
         metadata_bundle = generate_app_intents_metadata_bundle(
             actions = actions,
             apple_fragment = platform_prerequisites.apple_fragment,
-            constvalues_files = [dummy_constvalues_file],
-            intents_module_names = ["{}AppIntents".format(label.name)],
+            constvalues_files = primary_library[AppIntentsInfo].swiftconstvalues_files,
+            intents_module_names = primary_library[AppIntentsInfo].intent_module_names,
             label = label,
-            dependency_metadata_bundles = per_dep_metadata_bundles,
+            dependency_metadata_bundles = dependency_metadata_bundles,
             platform_prerequisites = platform_prerequisites,
-            source_files = [dummy_source_file],
+            source_files = primary_library[AppIntentsInfo].swift_source_files,
             target_triples = [
                 cc_toolchain[cc_common.CcToolchainInfo].target_gnu_system_name
                 for cc_toolchain in cc_toolchains.values()
