@@ -896,6 +896,8 @@ def ios_application_test_suite(name):
             ".*HelloWorldIntent.*",
             ".*IntelIntent.*",
             ".*iOSIntent.*",
+            ".*TestAppShortcuts.*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         text_file_not_contains = [
             ".*ArmIntent.*",
@@ -914,6 +916,8 @@ def ios_application_test_suite(name):
             ".*HelloWorldIntent.*",
             ".*ArmIntent.*",
             ".*iOSIntent.*",
+            ".*TestAppShortcuts.*",
+            ".*\"actionIdentifier\":\"HelloWorldIntent\".*",
         ],
         text_file_not_contains = [
             ".*IntelIntent.*",
