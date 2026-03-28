@@ -47,8 +47,9 @@ def _app_intents_metadata_bundle_partial_impl(
 
     metadata_bundle = None
     if platform_prerequisites.xcode_version_config.xcode_version() >= apple_common.dotted_version("26.0"):
-        # appintentsmetadataprocessor ignores AppShortcutsProvider coming from dependency metadata bundles,
-        # so treat the first app_intents dependency as the primary library and merge the remaining libraries into it.
+        # appintentsmetadataprocessor does not populate AppShortcutsProvider coming from dependency metadata bundles,
+        # so treat the first app_intents dependency as the primary library that supports AppShortcutsProvider and merge the remaining libraries into it.
+        # This preserves compatibility with the previous behavior where only a single app_intents module was supported for Shortcuts and Intents.
         primary_library = deps[first_cc_toolchain_key][0]
 
         dependency_metadata_bundles = []
