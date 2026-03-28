@@ -101,8 +101,8 @@ def _app_intents_attrs(*, deps_cfg):
     """
     return {
         "app_intents": attr.label_list(
-            doc = """List of dependencies implementing the AppIntents protocol.
-
+            doc = """
+List of dependencies implementing the AppIntents protocol.
 Multiple app_intents dependencies are supported on Xcode 26 and later. If
 multiple dependencies are provided, AppShortcutsProvider is recognized only
 when it is defined in the first dependency.
