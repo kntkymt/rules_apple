@@ -47,10 +47,12 @@ def _app_intents_metadata_bundle_partial_impl(
 
     metadata_bundle = None
     if platform_prerequisites.xcode_version_config.xcode_version() >= apple_common.dotted_version("26.0"):
-        # appintentsmetadataprocessor does not populate AppShortcutsProvider coming from dependency metadata bundles,
-        # so treat the first app_intents dependency as the primary library that supports AppShortcutsProvider and merge the remaining libraries into it.
-        # This preserves compatibility with the previous behavior where only a single app_intents module was supported for Shortcuts and Intents.
-        primary_library = deps[first_cc_toolchain_key][0]
+        # appintentsmetadataprocessor does not populate AppShortcutsProvider
+        # coming from dependency metadata bundles, so treat the first
+        # app_intents dependency as a metadata root module and merge the remaining modules into it.
+        # This preserves compatibility with the previous behavior
+        # where only a single app_intents module was supported for Shortcuts and Intents.
+        metadata_root_module = deps[first_cc_toolchain_key][0]
 
         dependency_metadata_bundles = []
         for dep in deps[first_cc_toolchain_key][1:]:
@@ -76,12 +78,12 @@ def _app_intents_metadata_bundle_partial_impl(
         metadata_bundle = generate_app_intents_metadata_bundle(
             actions = actions,
             apple_fragment = platform_prerequisites.apple_fragment,
-            constvalues_files = primary_library[AppIntentsInfo].swiftconstvalues_files,
-            intents_module_names = primary_library[AppIntentsInfo].intent_module_names,
+            constvalues_files = metadata_root_module[AppIntentsInfo].swiftconstvalues_files,
+            intents_module_names = metadata_root_module[AppIntentsInfo].intent_module_names,
             label = label,
             dependency_metadata_bundles = dependency_metadata_bundles,
             platform_prerequisites = platform_prerequisites,
-            source_files = primary_library[AppIntentsInfo].swift_source_files,
+            source_files = metadata_root_module[AppIntentsInfo].swift_source_files,
             target_triples = [
                 cc_toolchain[cc_common.CcToolchainInfo].target_gnu_system_name
                 for cc_toolchain in cc_toolchains.values()
